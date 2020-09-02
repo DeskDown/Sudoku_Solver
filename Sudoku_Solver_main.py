@@ -1,5 +1,3 @@
-from pprint import pprint
-
 N = 9
 check_diagonal = False
 mtx = [
@@ -50,6 +48,22 @@ with_diagonal = [
 ]
 
 
+def print_mat(mat):
+    n = len(mat)
+    c = " - "
+    sap = " | "
+    for i in range(n):
+        if i in [x for x in range(n) if x % 3 == 0]:
+            print(c * n)
+        for j in range(n):
+            if j in [x for x in range(n) if x % 3 == 0]:
+                print(f"{sap}{mat[i][j]}", end="")
+            else:
+                print(f" {mat[i][j]}", end="")
+        print(sap)
+    print(c * n)
+
+
 def add_and_check(mat, r, c, val):
     """Adds the val to mat[r]
 
@@ -67,8 +81,8 @@ def add_and_check(mat, r, c, val):
         mat[r][c] = 0
         # check box
         row, col = r // 3 * 3, c // 3 * 3
-        for row in mat[row : row + 3]:
-            if val in row[col : col + 3]:
+        for row in mat[row: row + 3]:
+            if val in row[col: col + 3]:
                 return False
         # check row
         if val in mat[r]:
@@ -121,8 +135,8 @@ def is_done(mat):
     for i in range(N):
         row, col = i // 3 * 3, i % 3 * 3
         ls = []
-        for row in mat[row : row + 3]:
-            ls.extend(row[col : col + 3])
+        for row in mat[row: row + 3]:
+            ls.extend(row[col: col + 3])
         ls_set = set(x for x in ls if x)
         if ls_set.__len__() != N:
             return False
@@ -146,10 +160,10 @@ def make_sk(mat, cell=0):
 
     """
     # print(cell)
-    if cell >= N * N: # we have solved all the cells
+    if cell >= N * N:  # we have solved all the cells
         return True
     r, c = cell // N, cell % N
-    if mat[r][c] != 0: # fixed value
+    if mat[r][c] != 0:  # fixed value
         return make_sk(mat, cell + 1)
 
     for v in range(1, 10):
@@ -170,13 +184,13 @@ def make_sk(mat, cell=0):
 mat = board
 if make_sk(mat):
     print("Congrats!! We have solved it.")
-    pprint(mat, width=40, compact=True)
+    print_mat(mat)
 elif check_diagonal:
     print("Solution not found, trying with 'check_diagonal = False'.")
     check_diagonal = False
     if make_sk(mat):
         print("Congrats!! We have solved it.")
-        pprint(mat, width=40, compact=True)
+        print_mat(mat)
     else:
         print("Sorry, I am not able to solve this puzzle.")
 else:
